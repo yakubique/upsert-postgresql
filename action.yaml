@@ -1,0 +1,50 @@
+name: "Upsert to PostgreSQL"
+description: "Upsert anything to PostgreSQL"
+author: Vladimir Levin
+branding:
+  icon: code
+  color: purple
+inputs:
+  input:
+    description: 'Input JSON/file'
+    required: true
+  host:
+    description: 'PostgreSQL host'
+    required: true
+  db:
+    description: 'PostgreSQL db'
+    required: true
+  port:
+    description: 'PostgreSQL port (default: 5432)'
+    required: true
+    default: '5432'
+  username:
+    description: 'PostgreSQL username'
+    required: true
+  password:
+    description: 'PostgreSQL password'
+    required: true
+  column_to_match:
+    description: Primary column to match records
+    required: true
+  table_name:
+    description: Name of table to upsert
+    required: true
+  table_schema:
+    default: 'public'
+    description: "Table schema to upsert (default: 'public')"
+  to_file:
+    description: "Save result to file (default: 'false')"
+    default: 'false'
+  ssl:
+    description: "SSL enabled (default: 'true')"
+    default: 'true'
+  from_file:
+    description: "Read query from file (default: 'false')"
+    default: 'false'
+outputs:
+  count:
+    description: Upserted rows count
+runs:
+  using: 'node20'
+  main: 'action/index.js'

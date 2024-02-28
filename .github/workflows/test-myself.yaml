@@ -1,0 +1,87 @@
+name: Test `upsert-postgresql` action
+on:
+  push:
+    branches:
+      - main
+
+env:
+  PG_USER: postgres
+  PG_PWD: mypassword
+  PG_DB: postgres
+  PG_HOST: localhost
+  PG_PORT: 5432
+
+jobs:
+  test-query:
+    runs-on: [ "ubuntu-latest" ]
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: ${{ env.PG_PWD }}
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Prepare DB
+        uses: yakubique/query-postgresql@v1.1
+        with:
+          query: |
+            -- Adminer 4.8.1 PostgreSQL 15.2 (Debian 15.2-1.pgdg110+1) dump
+            
+            DROP TABLE IF EXISTS "test";
+            CREATE TABLE "public"."test" (
+            "id" integer NOT NULL,
+            "value" text,
+            "test" smallint,
+            CONSTRAINT "test_id" UNIQUE ("id")
+            ) WITH (oids = false);
+            
+            TRUNCATE "test";
+            INSERT INTO "test" ("id", "value", "test") VALUES
+            (1,	'c',	1),
+            (2,	'b',	2);
+            
+            -- 2024-02-26 08:16:55.7544+00
+          host: ${{ env.PG_HOST }}
+          port: ${{ env.PG_PORT }}
+          username: ${{ env.PG_USER }}
+          password: ${{ env.PG_PWD }}
+          db: ${{ env.PG_DB }}
+          ssl: 'false'
+      - name: Get values
+        id: query
+        uses: yakubique/query-postgresql@v1.1
+        with:
+          query: |
+            select "id"::integer, "value", "test"::smallint from public.test
+          host: ${{ env.PG_HOST }}
+          port: ${{ env.PG_PORT }}
+          username: ${{ env.PG_USER }}
+          password: ${{ env.PG_PWD }}
+          db: ${{ env.PG_DB }}
+          ssl: 'false'
+      - name: Upsert
+        id: upsert
+        uses: ./
+        with:
+          input: |
+            [{ "id": 1, "value": "c", "test": 1 }, { "id": 2, "value": "b", "test": 2 }]
+          host: ${{ env.PG_HOST }}
+          port: ${{ env.PG_PORT }}
+          username: ${{ env.PG_USER }}
+          password: ${{ env.PG_PWD }}
+          db: ${{ env.PG_DB }}
+          ssl: 'false'
+          column_to_match: 'id'
+          table_name: 'test'
+      - name: Test 1
+        run: |
+          echo "${{ steps.upsert.outputs.count }}"
+          test "${{ steps.upsert.outputs.count }}" == "2"
