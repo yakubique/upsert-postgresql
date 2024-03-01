@@ -25,7 +25,7 @@ inputs:
     description: 'PostgreSQL password'
     required: true
   column_to_match:
-    description: Primary column to match records
+    description: "Primary column to match records (possible to pass multiple columns, comma separated)"
     required: true
   table_name:
     description: Name of table to upsert

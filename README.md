@@ -14,7 +14,7 @@ by `column_to_match`
 ```yaml
 - name: Upsert
   id: upsert
-  uses: yakubique/upsert-postgresql@v1
+  uses: yakubique/upsert-postgresql@v1.1
   with:
     input: |
       [{ "id": 1, "value": "c", "test": 1 }, { "id": 2, "value": "b", "test": 2 }]
@@ -32,20 +32,20 @@ by `column_to_match`
 
 <!-- AUTO-DOC-INPUT:START - Do not remove or modify this section -->
 
-|      INPUT      |  TYPE  | REQUIRED |  DEFAULT   |                DESCRIPTION                 |
-|-----------------|--------|----------|------------|--------------------------------------------|
-|      input      | string |   true   |            |              Input JSON/file               |
-|       db        | string |   true   |            |               PostgreSQL db                |
-|      host       | string |   true   |            |              PostgreSQL host               |
-|    username     | string |   true   |            |            PostgreSQL username             |
-|    password     | string |   true   |            |            PostgreSQL password             |
-|   table_name    | string |   true   |            |          Name of table to upsert           |
-| column_to_match | string |   true   |            |      Primary column to match records       |
-|      port       | string |   true   |  `"5432"`  |      PostgreSQL port (default: 5432)       |
-|       ssl       | string |  false   |  `"true"`  |       SSL enabled (default: 'true')        |
-|    from_file    | string |  false   | `"false"`  |  Read query from file (default: 'false')   |
-|  table_schema   | string |  false   | `"public"` | Table schema to upsert (default: 'public') |
-|     to_file     | string |  false   | `"false"`  |   Save result to file (default: 'false')   |
+|      INPUT      |  TYPE  | REQUIRED |  DEFAULT   |                                      DESCRIPTION                                      |
+|-----------------|--------|----------|------------|---------------------------------------------------------------------------------------|
+|      input      | string |   true   |            |                                    Input JSON/file                                    |
+|       db        | string |   true   |            |                                     PostgreSQL db                                     |
+|      host       | string |   true   |            |                                    PostgreSQL host                                    |
+|    password     | string |   true   |            |                                  PostgreSQL password                                  |
+|    username     | string |   true   |            |                                  PostgreSQL username                                  |
+|      port       | string |   true   |  `"5432"`  |                            PostgreSQL port (default: 5432)                            |
+|   table_name    | string |   true   |            |                                Name of table to upsert                                |
+| column_to_match | string |   true   |            | Primary column to match records (possible to pass multiple columns, comma separated)  |
+|  table_schema   | string |  false   | `"public"` |                      Table schema to upsert (default: 'public')                       |
+|       ssl       | string |  false   |  `"true"`  |                             SSL enabled (default: 'true')                             |
+|     to_file     | string |  false   | `"false"`  |                        Save result to file (default: 'false')                         |
+|    from_file    | string |  false   | `"false"`  |                        Read query from file (default: 'false')                        |
 
 <!-- AUTO-DOC-INPUT:END -->
 

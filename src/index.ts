@@ -27,7 +27,7 @@ const setOutputs = buildOutput(Outputs);
         });
         await client.connect();
 
-        const columnsToMatchOn = [inputs.columnToMatch];
+        const columnsToMatchOn = inputs.columnToMatch.includes(',') ? inputs.columnToMatch.split(',').map(x => x.trim()) : [inputs.columnToMatch];
         const tableSchema = await getTableSchema(client, inputs.tableSchema, inputs.tableName);
 
         const queries: QueryWithValues[] = input.map((item: any, index: number) => upsertOne(
