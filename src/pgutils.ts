@@ -126,7 +126,15 @@ export function upsertOne(
             `%I = $${valuesLength + 1}`,
             column
         ));
-        values.push(format('%s', item[column] as string));
+
+        let value = item[column];
+        if (value === null || value === undefined) {
+            value = null;
+        } else {
+            value = format('%s', item[column]);
+        }
+
+        values.push(value);
         valuesLength = valuesLength + 1;
     }
 

@@ -72,7 +72,7 @@ jobs:
         uses: ./
         with:
           input: |
-            [{ "id": 1, "value": "c", "test": 1 }, { "id": 2, "value": "b", "test": 2 }]
+            [{ "id": 1, "value": null, "test": 1 }, { "id": 2, "value": "b", "test": 2 }]
           host: ${{ env.PG_HOST }}
           port: ${{ env.PG_PORT }}
           username: ${{ env.PG_USER }}
@@ -85,3 +85,18 @@ jobs:
         run: |
           echo "${{ steps.upsert.outputs.count }}"
           test "${{ steps.upsert.outputs.count }}" == "2"
+      - name: Get values2
+        id: query2
+        uses: yakubique/query-postgresql@v1.1
+        with:
+          query: |
+            select "id"::integer, "value", "test"::smallint from public.test
+          host: ${{ env.PG_HOST }}
+          port: ${{ env.PG_PORT }}
+          username: ${{ env.PG_USER }}
+          password: ${{ env.PG_PWD }}
+          db: ${{ env.PG_DB }}
+          ssl: 'false'
+      - name: Test 2
+        run: |
+          echo "${{ steps.query2.outputs.result }}"
