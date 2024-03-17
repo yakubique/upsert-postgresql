@@ -100,3 +100,4 @@ jobs:
       - name: Test 2
         run: |
           echo "${{ steps.query2.outputs.result }}"
+          test "${{ steps.query2.outputs.result }}" == "[{id:1,value:null,test:1},{id:2,value:b,test:2}]"

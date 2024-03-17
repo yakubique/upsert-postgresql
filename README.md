@@ -14,7 +14,7 @@ by `column_to_match`
 ```yaml
 - name: Upsert
   id: upsert
-  uses: yakubique/upsert-postgresql@v1.1
+  uses: yakubique/upsert-postgresql@v1.2
   with:
     input: |
       [{ "id": 1, "value": "c", "test": 1 }, { "id": 2, "value": "b", "test": 2 }]
