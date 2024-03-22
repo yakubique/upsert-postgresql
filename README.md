@@ -1,8 +1,11 @@
 # Upsert to PostgreSQL
 
+[![Coverage](./badges/coverage.svg)](./badges/coverage.svg)
+[![Test `upsert-postgresql` action](https://github.com/yakubique/upsert-postgresql/actions/workflows/test-myself.yaml/badge.svg)](https://github.com/yakubique/upsert-postgresql/actions/workflows/test-myself.yaml)
+
+
 Upsert anything to PostgreSQL
 
-[![Test `upsert-postgresql` action](https://github.com/yakubique/upsert-postgresql/actions/workflows/test-myself.yaml/badge.svg)](https://github.com/yakubique/upsert-postgresql/actions/workflows/test-myself.yaml)
 
 [Usage workflow](https://github.com/yakubique/upsert-postgresql/actions/workflows/test-myself.yaml)
 
@@ -14,7 +17,7 @@ by `column_to_match`
 ```yaml
 - name: Upsert
   id: upsert
-  uses: yakubique/upsert-postgresql@v1.2
+  uses: yakubique/upsert-postgresql@v1.3
   with:
     input: |
       [{ "id": 1, "value": "c", "test": 1 }, { "id": 2, "value": "b", "test": 2 }]

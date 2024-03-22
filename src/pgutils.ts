@@ -61,7 +61,10 @@ export function checkItemAgainstSchema(
     columnsInfo: ColumnInfo[],
     index: number
 ) {
-    if (columnsInfo.length === 0) return item;
+    if (columnsInfo.length === 0) {
+        return item;
+    }
+
     const schema = columnsInfo.reduce((acc, { column_name, data_type, is_nullable }) => {
         acc[column_name] = { type: data_type.toUpperCase(), nullable: is_nullable === 'YES' };
         return acc;
@@ -108,7 +111,14 @@ export function upsertOne(
     const updates: string[] = [];
 
     const columnsString = allKeys.map(i => format('%I', i)).join(', ');
-    const allValues = allKeys.map(key => item[key]);
+    const allValues = allKeys.map(key => {
+        const val = item[key];
+
+        if (val === undefined) {
+            return null;
+        }
+        return val;
+    });
     const valuesString = allValues.map((_, key) => `$${valuesLength + key}`).join(', ');
 
     const insertQuery = format(
@@ -138,7 +148,7 @@ export function upsertOne(
         valuesLength = valuesLength + 1;
     }
 
-    let query = `${insertQuery} SET ${updates.join(', ')}`;
+    let query = `${insertQuery} SET ${updates.join(', ')}`.trim();
 
     return { query, values } as QueryWithValues;
 }

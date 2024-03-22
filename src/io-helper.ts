@@ -1,7 +1,7 @@
 import * as core from '@actions/core';
 import { isBlank, getBooleanInput, getOptional } from '@yakubique/atils/dist';
 
-enum Inputs {
+export enum Inputs {
     Input = 'input',
     Host = 'host',
     Port = 'port',
@@ -32,7 +32,7 @@ export interface ActionInputs {
 }
 
 export function getInputs(): ActionInputs {
-    const result: ActionInputs | any = {};
+    const result = {} as ActionInputs;
 
     result.input = `${core.getInput(Inputs.Input, { required: true })}`;
     result.host = `${core.getInput(Inputs.Host, { required: true })}`;
@@ -46,7 +46,7 @@ export function getInputs(): ActionInputs {
     if (isBlank(port)) {
         result.port = 5432;
     } else {
-        result.prot = parseInt(port, 10);
+        result.port = parseInt(port, 10);
     }
 
     result.tableSchema = getOptional(Inputs.TableSchema, 'public', { required: false });
